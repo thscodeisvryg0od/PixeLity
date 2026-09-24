@@ -1,24 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pixel Like Launcher</string>
-
-    <!-- Home / default launcher -->
-    <string name="set_as_default_prompt">Set Pixel Like Launcher as your default home app</string>
-    <string name="set_as_default_action">Set default</string>
-
-    <!-- App drawer -->
-    <string name="drawer_search_hint">Search apps</string>
-
-    <!-- Common actions -->
-    <string name="action_open">Open</string>
-    <string name="action_app_info">App info</string>
-    <string name="action_uninstall">Uninstall</string>
-    <string name="action_add_to_home">Add to Home</string>
-    <string name="action_remove_from_home">Remove from Home</string>
-    <string name="action_hide_app">Hide</string>
-
-    <!-- Content descriptions -->
-    <string name="cd_app_icon">App icon</string>
-    <string name="cd_wallpaper">Change wallpaper</string>
-    <string name="cd_settings">Settings</string>
+    <string name="app_name">PixeLity</string>
+    <string name="action_open">Aç</string>
+    <string name="action_add_to_home">Ana Ekrana Ekle</string>
+    <string name="action_remove_from_home">Kaldır</string>
+    <string name="action_hide_app">Gizle</string>
+    <string name="action_app_info">Uygulama Bilgisi</string>
+    <string name="action_uninstall">Kaldır (Uninstall)</string>
+    <string name="search_hint">Uygulamalarda ara...</string>
 </resources>
