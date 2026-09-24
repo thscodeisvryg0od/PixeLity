@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!--
+      Simple, original launcher glyph: a stylized "P" (Pixel-like feel)
+      drawn as two rounded rectangles forming an abstract home screen shape.
+      Not derived from Google branding.
+    -->
+
+    <!-- Vertical bar of the "P" -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,32h8v44h-8z" />
+
+    <!-- Bowl of the "P" -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M50,32
+            a14,14 0 0 1 0,28
+            h-8
+            v-8
+            h8
+            a6,6 0 0 0 0,-12
+            h-8
+            v-8
+            z" />
+</vector>

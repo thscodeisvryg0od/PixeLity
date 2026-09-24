@@ -1,0 +1,58 @@
+# -----------------------------------------------------------------
+# Android / Gradle
+# -----------------------------------------------------------------
+
+# Built output
+*.apk
+*.aar
+*.ap_
+*.aab
+*.dex
+
+# Gradle files
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration file (SDK path — never commit)
+local.properties
+
+# Log / OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Keystore files (never commit signing keys)
+*.jks
+*.keystore
+keystore.properties
+
+# NDK
+obj/
+jniLibs/
+
+# Kotlin
+.kotlin/
+
+# Google services (if added later)
+google-services.json
+
+# Firebase
+.firebase/
+
+# MacOS
+.AppleDouble
+.LSOverride
+._*
+
+# FreeLine / temp
+.freeline/

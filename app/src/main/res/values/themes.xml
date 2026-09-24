@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      Base XML theme for the launcher window.
+      - Uses the platform Material theme (no AppCompat / Material Components dependency).
+      - The actual app colors/typography are driven by Compose Material3 at runtime
+        (see ui/theme/Theme.kt). This XML theme only governs the window chrome
+        before Compose takes over (splash frame, status bar, window background).
+    -->
+    <style name="Theme.PixelLikeLauncher" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="p">shortEdges</item>
+    </style>
+
+</resources>
