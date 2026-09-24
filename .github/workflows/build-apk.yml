@@ -1,0 +1,33 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build PixeLity APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - run: chmod +x gradlew || true
+      - run: ./gradlew :app:assembleDebug --stacktrace
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          APK=$(find app/build/outputs/apk -name "*.apk" | head -1)
+          cp "$APK" dist/PixeLity.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PixeLity
+          path: dist/PixeLity.apk
+          retention-days: 30
