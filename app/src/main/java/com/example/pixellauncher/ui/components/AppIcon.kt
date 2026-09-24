@@ -1,6 +1,7 @@
 package com.example.pixellauncher.ui.components
 
 import android.graphics.drawable.Drawable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.example.pixellauncher.R
 import com.example.pixellauncher.data.model.AppInfo
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppIcon(
     app: AppInfo,
