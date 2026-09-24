@@ -1,5 +1,6 @@
 package com.example.pixellauncher.ui.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pixellauncher.data.model.AppInfo
@@ -14,9 +15,10 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val apps: List<AppInfo> = emptyList(),
-    val favoriteApps: List<AppInfo> = emptyList(),
+    val filteredApps: List<AppInfo> = emptyList(),
+    val dockApps: List<AppInfo> = emptyList(),
     val searchQuery: String = "",
-    val searchResults: List<AppInfo> = emptyList(),
+    val isDrawerOpen: Boolean = false,
     val isLoading: Boolean = true
 )
 
@@ -29,6 +31,7 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
+    private val _isDrawerOpen = MutableStateFlow(false)
 
     init {
         loadApps()
@@ -38,27 +41,28 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             combine(
-                repository.getInstalledApps(),
-                repository.getFavoritePackages(),
-                _searchQuery
-            ) { apps: List<AppInfo>, favorites: Set<String>, query: String ->
-                val favoriteAppsList = apps.filter { app: AppInfo -> app.packageName in favorites }
-                val searchList = if (query.isBlank()) {
-                    emptyList()
+                repository.loadLaunchableApps(),
+                _searchQuery,
+                _isDrawerOpen
+            ) { apps, query, isDrawerOpen ->
+                val filtered = if (query.isBlank()) {
+                    apps
                 } else {
-                    apps.filter { app: AppInfo ->
-                        app.label.contains(query, ignoreCase = true) ||
-                                app.packageName.contains(query, ignoreCase = true)
+                    apps.filter {
+                        it.label.contains(query, ignoreCase = true) ||
+                                it.packageName.contains(query, ignoreCase = true)
                     }
                 }
+                val dock = apps.take(5) // Varsayılan dock uygulamaları
                 HomeUiState(
                     apps = apps,
-                    favoriteApps = favoriteAppsList,
+                    filteredApps = filtered,
+                    dockApps = dock,
                     searchQuery = query,
-                    searchResults = searchList,
+                    isDrawerOpen = isDrawerOpen,
                     isLoading = false
                 )
-            }.collect { state: HomeUiState ->
+            }.collect { state ->
                 _uiState.value = state
             }
         }
@@ -68,9 +72,32 @@ class HomeViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    fun toggleFavorite(packageName: String) {
-        viewModelScope.launch {
-            repository.toggleFavorite(packageName)
-        }
+    fun openDrawer() {
+        _isDrawerOpen.value = true
+    }
+
+    fun closeDrawer() {
+        _isDrawerOpen.value = false
+        _searchQuery.value = ""
+    }
+
+    fun launchApp(context: Context, packageName: String) {
+        repository.launchApp(context, packageName)
+    }
+
+    fun addToDock(app: AppInfo) {
+        // Dock yönetimi ekleme mantığı
+    }
+
+    fun hideApp(packageName: String) {
+        // Uygulama gizleme mantığı
+    }
+
+    fun openAppInfo(context: Context, packageName: String) {
+        repository.openAppInfo(context, packageName)
+    }
+
+    fun uninstallApp(context: Context, packageName: String) {
+        repository.uninstallApp(context, packageName)
     }
 }
