@@ -25,19 +25,14 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --info
 
-      - name: Rename & Move APK
+      - name: Prepare Artifact
         run: |
           mkdir -p dist
-          APK=$(find app/build/outputs/apk -name "*.apk" | head -1)
-          if [ -n "$APK" ]; then
-            cp "$APK" dist/PixeLity.apk
-          else
-            echo "APK dosyasi bulunamadi!" && exit 1
-          fi
+          find app/build/outputs/apk/debug/ -name "*.apk" -exec cp {} dist/PixeLity.apk \;
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: PixeLity
