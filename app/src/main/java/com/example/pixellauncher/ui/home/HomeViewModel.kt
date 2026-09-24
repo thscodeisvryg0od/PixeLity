@@ -1,6 +1,5 @@
 package com.example.pixellauncher.ui.home
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pixellauncher.data.model.AppInfo
@@ -30,18 +29,19 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    private val _apps = MutableStateFlow<List<AppInfo>>(emptyList())
     private val _searchQuery = MutableStateFlow("")
     private val _isDrawerOpen = MutableStateFlow(false)
 
     init {
+        observeState()
         loadApps()
     }
 
-    fun loadApps() {
+    private fun observeState() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
             combine(
-                repository.loadLaunchableApps(),
+                _apps,
                 _searchQuery,
                 _isDrawerOpen
             ) { apps, query, isDrawerOpen ->
@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor(
                                 it.packageName.contains(query, ignoreCase = true)
                     }
                 }
-                val dock = apps.take(5) // Varsayılan dock uygulamaları
+                val dock = apps.take(5)
                 HomeUiState(
                     apps = apps,
                     filteredApps = filtered,
@@ -65,6 +65,13 @@ class HomeViewModel @Inject constructor(
             }.collect { state ->
                 _uiState.value = state
             }
+        }
+    }
+
+    fun loadApps() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            _apps.value = repository.loadLaunchableApps()
         }
     }
 
@@ -81,23 +88,27 @@ class HomeViewModel @Inject constructor(
         _searchQuery.value = ""
     }
 
-    fun launchApp(context: Context, packageName: String) {
-        repository.launchApp(context, packageName)
+    fun launchApp(app: AppInfo) {
+        repository.launchApp(app)
     }
 
     fun addToDock(app: AppInfo) {
         // Dock yönetimi ekleme mantığı
     }
 
-    fun hideApp(packageName: String) {
+    fun removeFromDock(app: AppInfo) {
+        // Dock'tan kaldırma mantığı
+    }
+
+    fun hideApp(app: AppInfo) {
         // Uygulama gizleme mantığı
     }
 
-    fun openAppInfo(context: Context, packageName: String) {
-        repository.openAppInfo(context, packageName)
+    fun openAppInfo(app: AppInfo) {
+        repository.openAppInfo(app.packageName)
     }
 
-    fun uninstallApp(context: Context, packageName: String) {
-        repository.uninstallApp(context, packageName)
+    fun uninstallApp(app: AppInfo) {
+        repository.uninstallApp(app.packageName)
     }
 }
